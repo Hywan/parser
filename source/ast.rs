@@ -1090,23 +1090,27 @@ pub enum Arity<'a> {
 ///     Variable
 /// };
 /// use tagua_parser::rules::statements::function::function;
+/// use tagua_parser::tokens::{
+///     Span,
+///     Token
+/// };
 ///
 /// # fn main() {
 /// assert_eq!(
-///     function(b"function f(I $x): O { return; }"),
+///     function(Span::new(b"function f(I $x): O { return; }")),
 ///     Result::Done(
-///         &b""[..],
+///         Span::new_at(b"", 31, 1, 32),
 ///         Statement::Function(
 ///             Function {
-///                 name  : &b"f"[..],
+///                 name  : Span::new_at(b"f", 9, 1, 10),
 ///                 inputs: Arity::Finite(vec![
 ///                     Parameter {
-///                         ty   : Ty::Copy(Some(Name::Unqualified(&b"I"[..]))),
-///                         name : Variable(&b"x"[..]),
+///                         ty   : Ty::Copy(Some(Name::Unqualified(Span::new_at(b"I", 11, 1, 12)))),
+///                         name : Variable(Span::new_at(b"x", 14, 1, 15)),
 ///                         value: None
 ///                     }
 ///                 ]),
-///                 output: Ty::Copy(Some(Name::Unqualified(&b"O"[..]))),
+///                 output: Ty::Copy(Some(Name::Unqualified(Span::new_at(b"O", 18, 1, 19)))),
 ///                 body  : vec![Statement::Return]
 ///             }
 ///         )
