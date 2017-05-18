@@ -64,10 +64,26 @@ pub enum Literal<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Literal;
     /// use tagua_parser::rules::literals::literal;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
-    /// assert_eq!(literal(b"true"),  Result::Done(&b""[..], Literal::Boolean(true)));
-    /// assert_eq!(literal(b"false"), Result::Done(&b""[..], Literal::Boolean(false)));
+    /// assert_eq!(
+    ///     literal(Span::new(b"true")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 4, 1, 5),
+    ///         Literal::Boolean(Token::new(true, Span::new(b"true")))
+    ///     )
+    /// );
+    /// assert_eq!(
+    ///     literal(Span::new(b"false")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 5, 1, 6),
+    ///         Literal::Boolean(Token::new(false, Span::new(b"false")))
+    ///     )
+    /// );
     /// # }
     /// ```
     Boolean(Token<'a, bool>),
@@ -81,14 +97,40 @@ pub enum Literal<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Literal;
     /// use tagua_parser::rules::literals::literal;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
-    /// let output = Result::Done(&b""[..], Literal::Integer(42i64));
-    ///
-    /// assert_eq!(literal(b"0b101010"), output);
-    /// assert_eq!(literal(b"052"), output);
-    /// assert_eq!(literal(b"42"), output);
-    /// assert_eq!(literal(b"0x2a"), output);
+    /// assert_eq!(
+    ///     literal(Span::new(b"0b101010")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 8, 1, 9),
+    ///         Literal::Integer(Token::new(42, Span::new(b"0b101010")))
+    ///     )
+    /// );
+    /// assert_eq!(
+    ///     literal(Span::new(b"052")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 3, 1, 4),
+    ///         Literal::Integer(Token::new(42, Span::new(b"052")))
+    ///     )
+    /// );
+    /// assert_eq!(
+    ///     literal(Span::new(b"42")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 2, 1, 3),
+    ///         Literal::Integer(Token::new(42, Span::new(b"42")))
+    ///     )
+    /// );
+    /// assert_eq!(
+    ///     literal(Span::new(b"0x2a")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 4, 1, 5),
+    ///         Literal::Integer(Token::new(42, Span::new(b"0x2a")))
+    ///     )
+    /// );
     /// # }
     /// ```
     Integer(Token<'a, i64>),
@@ -102,9 +144,19 @@ pub enum Literal<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Literal;
     /// use tagua_parser::rules::literals::literal;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
-    /// assert_eq!(literal(b"null"), Result::Done(&b""[..], Literal::Null));
+    /// assert_eq!(
+    ///     literal(Span::new(b"null")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 4, 1, 5),
+    ///         Literal::Null(Token::new((), Span::new(b"null")))
+    ///     )
+    /// );
     /// # }
     /// ```
     Null(Token<'a, ()>),
@@ -118,13 +170,33 @@ pub enum Literal<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Literal;
     /// use tagua_parser::rules::literals::literal;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
-    /// let output = Result::Done(&b""[..], Literal::Real(4.2f64));
-    ///
-    /// assert_eq!(literal(b"4.2"), output);
-    /// assert_eq!(literal(b".42e1"), output);
-    /// assert_eq!(literal(b"420e-2"), output);
+    /// assert_eq!(
+    ///     literal(Span::new(b"4.2")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 3, 1, 4),
+    ///         Literal::Real(Token::new(4.2f64, Span::new(b"4.2")))
+    ///     )
+    /// );
+    /// assert_eq!(
+    ///     literal(Span::new(b".42e1")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 5, 1, 6),
+    ///         Literal::Real(Token::new(4.2f64, Span::new(b".42e1")))
+    ///     )
+    /// );
+    /// assert_eq!(
+    ///     literal(Span::new(b"420e-2")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 6, 1, 7),
+    ///         Literal::Real(Token::new(4.2f64, Span::new(b"420e-2")))
+    ///     )
+    /// );
     /// # }
     /// ```
     Real(Token<'a, f64>),
@@ -138,11 +210,18 @@ pub enum Literal<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Literal;
     /// use tagua_parser::rules::literals::literal;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     literal(b"'foo\\'bar'"),
-    ///     Result::Done(&b""[..], Literal::String(b"foo'bar".to_vec()))
+    ///     literal(Span::new(b"'foo\\'bar'")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 10, 1, 11),
+    ///         Literal::String(Token::new(b"foo'bar".to_vec(), Span::new(b"'foo\\'bar'")))
+    ///     )
     /// );
     /// # }
     /// ```
