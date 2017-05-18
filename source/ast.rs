@@ -849,16 +849,20 @@ pub enum Ty<'a> {
     ///     Variable
     /// };
     /// use tagua_parser::rules::statements::function::parameters;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     parameters(b"(I $x)"),
+    ///     parameters(Span::new(b"(I $x)")),
     ///     Result::Done(
-    ///         &b""[..],
+    ///         Span::new_at(b"", 6, 1, 7),
     ///         Arity::Finite(vec![
     ///             Parameter {
-    ///                 ty   : Ty::Copy(Some(Name::Unqualified(&b"I"[..]))),
-    ///                 name : Variable(&b"x"[..]),
+    ///                 ty   : Ty::Copy(Some(Name::Unqualified(Span::new_at(b"I", 1, 1, 2)))),
+    ///                 name : Variable(Span::new_at(b"x", 4, 1, 5)),
     ///                 value: None
     ///             }
     ///         ])
@@ -883,16 +887,20 @@ pub enum Ty<'a> {
     ///     Variable
     /// };
     /// use tagua_parser::rules::statements::function::parameters;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     parameters(b"(I &$x)"),
+    ///     parameters(Span::new(b"(I &$x)")),
     ///     Result::Done(
-    ///         &b""[..],
+    ///         Span::new_at(b"", 7, 1, 8),
     ///         Arity::Finite(vec![
     ///             Parameter {
-    ///                 ty   : Ty::Reference(Some(Name::Unqualified(&b"I"[..]))),
-    ///                 name : Variable(&b"x"[..]),
+    ///                 ty   : Ty::Reference(Some(Name::Unqualified(Span::new_at(b"I", 1, 1, 2)))),
+    ///                 name : Variable(Span::new_at(b"x", 5, 1, 6)),
     ///                 value: None
     ///             }
     ///         ])
