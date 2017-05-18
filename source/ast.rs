@@ -975,11 +975,15 @@ pub enum Arity<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Arity;
     /// use tagua_parser::rules::statements::function::parameters;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     parameters(b"()"),
-    ///     Result::Done(&b""[..], Arity::Constant)
+    ///     parameters(Span::new(b"()")),
+    ///     Result::Done(Span::new_at(b"", 2, 1, 3), Arity::Constant)
     /// );
     /// # }
     /// ```
@@ -999,21 +1003,25 @@ pub enum Arity<'a> {
     ///     Variable
     /// };
     /// use tagua_parser::rules::statements::function::parameters;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     parameters(b"($x, $y)"),
+    ///     parameters(Span::new(b"($x, $y)")),
     ///     Result::Done(
-    ///         &b""[..],
+    ///         Span::new_at(b"", 8, 1, 9),
     ///         Arity::Finite(vec![
     ///             Parameter {
     ///                 ty   : Ty::Copy(None),
-    ///                 name : Variable(&b"x"[..]),
+    ///                 name : Variable(Span::new_at(b"x", 2, 1, 3)),
     ///                 value: None
     ///             },
     ///             Parameter {
     ///                 ty   : Ty::Copy(None),
-    ///                 name : Variable(&b"y"[..]),
+    ///                 name : Variable(Span::new_at(b"y", 6, 1, 7)),
     ///                 value: None
     ///             }
     ///         ])
@@ -1037,21 +1045,25 @@ pub enum Arity<'a> {
     ///     Variable
     /// };
     /// use tagua_parser::rules::statements::function::parameters;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     parameters(b"($x, ...$y)"),
+    ///     parameters(Span::new(b"($x, ...$y)")),
     ///     Result::Done(
-    ///         &b""[..],
+    ///         Span::new_at(b"", 11, 1, 12),
     ///         Arity::Infinite(vec![
     ///             Parameter {
     ///                 ty   : Ty::Copy(None),
-    ///                 name : Variable(&b"x"[..]),
+    ///                 name : Variable(Span::new_at(b"x", 2, 1, 3)),
     ///                 value: None
     ///             },
     ///             Parameter {
     ///                 ty   : Ty::Copy(None),
-    ///                 name : Variable(&b"y"[..]),
+    ///                 name : Variable(Span::new_at(b"y", 9, 1, 10)),
     ///                 value: None
     ///             }
     ///         ])
