@@ -925,21 +925,25 @@ pub enum Ty<'a> {
 ///     Variable
 /// };
 /// use tagua_parser::rules::statements::function::parameters;
+/// use tagua_parser::tokens::{
+///     Span,
+///     Token
+/// };
 ///
 /// # fn main() {
 /// assert_eq!(
-///     parameters(b"($x = 42, I &$y)"),
+///     parameters(Span::new(b"($x = 42, I &$y)")),
 ///     Result::Done(
-///         &b""[..],
+///         Span::new_at(b"", 16, 1, 17),
 ///         Arity::Finite(vec![
 ///             Parameter {
 ///                 ty   : Ty::Copy(None),
-///                 name : Variable(&b"x"[..]),
-///                 value: Some(Expression::Literal(Literal::Integer(42i64)))
+///                 name : Variable(Span::new_at(b"x", 2, 1, 3)),
+///                 value: Some(Expression::Literal(Literal::Integer(Token::new(42i64, Span::new_at(b"42", 6, 1, 7)))))
 ///             },
 ///             Parameter {
-///                 ty   : Ty::Reference(Some(Name::Unqualified(&b"I"[..]))),
-///                 name : Variable(&b"y"[..]),
+///                 ty   : Ty::Reference(Some(Name::Unqualified(Span::new_at(b"I", 10, 1, 11)))),
+///                 name : Variable(Span::new_at(b"y", 14, 1, 15)),
 ///                 value: None
 ///             }
 ///         ])
