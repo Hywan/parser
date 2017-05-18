@@ -1250,19 +1250,19 @@ pub struct Function<'a> {
 ///                 declaration_scope: Scope::Static,
 ///                 inputs           : Arity::Infinite(vec![
 ///                     Parameter {
-///                         ty   : Ty::Copy(Some(Name::Unqualified(&b"I"[..]))),
-///                         name : Variable(&b"x"[..]),
+///                         ty   : Ty::Copy(Some(Name::Unqualified(Span::new_at(b"I", 18, 1, 19)))),
+///                         name : Variable(Span::new_at(b"x", 24, 1, 25)),
 ///                         value: None
 ///                     }
 ///                 ]),
-///                 output         : Ty::Reference(Some(Name::Unqualified(&b"O"[..]))),
+///                 output         : Ty::Reference(Some(Name::Unqualified(Span::new_at(b"O", 42, 1, 43)))),
 ///                 enclosing_scope: Some(vec![
 ///                     Expression::Reference(
 ///                         Box::new(
-///                             Expression::Variable(Variable(&b"y"[..]))
+///                             Expression::Variable(Variable(Span::new_at(b"y", 34, 1, 35)))
 ///                         )
 ///                     ),
-///                     Expression::Variable(Variable(&b"z"[..]))
+///                     Expression::Variable(Variable(Span::new_at(b"z", 38, 1, 39)))
 ///                 ]),
 ///                 body: vec![Statement::Return]
 ///             }
