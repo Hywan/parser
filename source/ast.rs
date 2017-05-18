@@ -237,11 +237,18 @@ pub enum Literal<'a> {
 /// use tagua_parser::Result;
 /// use tagua_parser::ast::Variable;
 /// use tagua_parser::rules::tokens::variable;
+/// use tagua_parser::tokens::{
+///     Span,
+///     Token
+/// };
 ///
 /// # fn main() {
 /// assert_eq!(
-///     variable(b"$foo"),
-///     Result::Done(&b""[..], Variable(&b"foo"[..]))
+///     variable(Span::new(b"$foo")),
+///     Result::Done(
+///         Span::new_at(b"", 4, 1, 5),
+///         Variable(Span::new_at(b"foo", 1, 1, 2))
+///     )
 /// );
 /// # }
 /// ```
@@ -261,11 +268,18 @@ pub enum Name<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Name;
     /// use tagua_parser::rules::tokens::qualified_name;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     qualified_name(b"Bar"),
-    ///     Result::Done(&b""[..], Name::Unqualified(&b"Bar"[..]))
+    ///     qualified_name(Span::new(b"Bar")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 3, 1, 4),
+    ///         Name::Unqualified(Span::new(b"Bar"))
+    ///     )
     /// );
     /// # }
     /// ```
@@ -281,11 +295,21 @@ pub enum Name<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Name;
     /// use tagua_parser::rules::tokens::qualified_name;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     qualified_name(b"Foo\\Bar"),
-    ///     Result::Done(&b""[..], Name::Qualified(vec![&b"Foo"[..], &b"Bar"[..]]))
+    ///     qualified_name(Span::new(b"Foo\\Bar")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 7, 1, 8),
+    ///         Name::Qualified(vec![
+    ///             Span::new(b"Foo"),
+    ///             Span::new_at(b"Bar", 4, 1, 5)
+    ///         ])
+    ///     )
     /// );
     /// # }
     /// ```
@@ -301,11 +325,21 @@ pub enum Name<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Name;
     /// use tagua_parser::rules::tokens::qualified_name;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     qualified_name(b"namespace\\Foo\\Bar"),
-    ///     Result::Done(&b""[..], Name::RelativeQualified(vec![&b"Foo"[..], &b"Bar"[..]]))
+    ///     qualified_name(Span::new(b"namespace\\Foo\\Bar")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 17, 1, 18),
+    ///         Name::RelativeQualified(vec![
+    ///             Span::new_at(b"Foo", 10, 1, 11),
+    ///             Span::new_at(b"Bar", 14, 1, 15)
+    ///         ])
+    ///     )
     /// );
     /// # }
     /// ```
@@ -322,11 +356,21 @@ pub enum Name<'a> {
     /// use tagua_parser::Result;
     /// use tagua_parser::ast::Name;
     /// use tagua_parser::rules::tokens::qualified_name;
+    /// use tagua_parser::tokens::{
+    ///     Span,
+    ///     Token
+    /// };
     ///
     /// # fn main() {
     /// assert_eq!(
-    ///     qualified_name(b"\\Foo\\Bar"),
-    ///     Result::Done(&b""[..], Name::FullyQualified(vec![&b"Foo"[..], &b"Bar"[..]]))
+    ///     qualified_name(Span::new(b"\\Foo\\Bar")),
+    ///     Result::Done(
+    ///         Span::new_at(b"", 8, 1, 9),
+    ///         Name::FullyQualified(vec![
+    ///             Span::new_at(b"Foo", 1, 1, 2),
+    ///             Span::new_at(b"Bar", 5, 1, 6)
+    ///         ])
+    ///     )
     /// );
     /// # }
     /// ```
